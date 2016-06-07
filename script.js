@@ -1,6 +1,7 @@
 // Edit the initial year and number of tabs to match your GeoJSON data and tabs in index.html
-var year = "1910";
-var tabs = 11;
+var year = "1900";
+var tabs = 12;
+var geoJsonLayer;
 
 // Edit the center point and zoom level
 var map = L.map('map', {
@@ -19,7 +20,7 @@ new L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png
 }).addTo(map);
 
 // Edit to upload GeoJSON data file from your local directory
-$.getJSON("town-home-value-index.geojson", function (data) {
+$.getJSON("layers/" + year + ".geojson", function (data) {
   geoJsonLayer = L.geoJson(data, {
     style: style,
     onEachFeature: onEachFeature
@@ -106,6 +107,16 @@ $(".tabItem").click(function() {
   $(this).addClass("selected");
   year = $(this).html();
   // year = $(this).html().split("-")[1];  /* use for school years, eg 2010-11 */
+
+  map.removeLayer(geoJsonLayer);
+
+  $.getJSON("layers/" + year + ".geojson", function (data) {
+    geoJsonLayer = L.geoJson(data, {
+      style: style,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+  });
+
   geoJsonLayer.setStyle(style);
 });
 
