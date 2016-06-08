@@ -1,7 +1,6 @@
 // Edit the initial year and number of tabs to match your GeoJSON data and tabs in index.html
 var year = "1900";
 var tabs = 12;
-var geoJsonLayer;
 
 // Edit the center point and zoom level
 var map = L.map('map', {
@@ -11,12 +10,17 @@ var map = L.map('map', {
 });
 
 // Edit links to your GitHub repo and data source credit
-map.attributionControl
-.setPrefix('View <a href="http://github.com/jackdougherty/otl-home-value" target="_blank">data and code on GitHub</a>, created with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>; design by <a href="http://ctmirror.org">CT Mirror</a>');
+map.attributionControl.setPrefix('View \
+  <a href="http://github.com/jackdougherty/otl-home-value" target="_blank"> \
+  data and code on GitHub</a>, created with <a href="http://leafletjs.com" \
+  title="A JS library for interactive maps">Leaflet</a>; design by \
+  <a href="http://ctmirror.org">CT Mirror</a>');
 
 // Basemap layer
 new L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright"> \
+  OpenStreetMap</a> contributors, &copy; \
+  <a href="http://cartodb.com/attributions">CartoDB</a>'
 }).addTo(map);
 
 // Edit to upload GeoJSON data file from your local directory
@@ -49,7 +53,6 @@ function getColor(d) {
 // Edit the getColor property to match data properties in your GeoJSON file
 // In this example, columns follow this pattern: index1910, index1920...
 function style(feature) {
-  console.log(feature.properties.temp);
   return {
     fillColor: getColor(parseFloat(feature.properties.temp)),
     weight: 1,
@@ -98,7 +101,10 @@ info.onAdd = function (map) {
 info.update = function (props) {
   var winName =
   this._div.innerHTML = (props ?
-    '<div class="areaName">' + props.name + '</div>' : '<div class="areaName faded">Hover over areas</div>') + '<div class="areaLabel"><div class="areaValue">Home Value Index</div>' +(props ? '' + (checkNull(props.temp)) : '--') + '</div>';
+    '<div class="areaName">' + props.name + '</div>' :
+    '<div class="areaName faded">Hover over areas</div>') +
+    '<div class="areaLabel"><div class="areaValue">Home Value Index</div>' +
+    (props ? (checkNull(props.temp)) : '--') + '</div>';
 };
 info.addTo(map);
 
