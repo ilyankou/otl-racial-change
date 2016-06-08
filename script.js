@@ -12,14 +12,14 @@ var map = L.map('map', {
 
 // Edit links to your GitHub repo and data source credit
 map.attributionControl
-.setPrefix('View <a href="http://github.com/jackdougherty/otl-home-value" target="_blank">data and code on GitHub</a>, created with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>; design by <a href="http://ctmirror.org">CT Mirror</a>');
+.setPrefix('View <a href="http://github.com/jackdougherty/otl-racial-change" target="_blank">data and code on GitHub</a>, created with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>; design by <a href="http://ctmirror.org">CT Mirror</a>');
 
 // Basemap layer
 new L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
 }).addTo(map);
 
-// Edit to upload GeoJSON data file from your local directory
+// Edit to upload GeoJSON data from layers folder
 $.getJSON("layers/" + year + ".geojson", function (data) {
   geoJsonLayer = L.geoJson(data, {
     style: style,
@@ -46,11 +46,11 @@ function getColor(d) {
                    'gray' ;
 }
 
-// Edit the getColor property to match data properties in your GeoJSON file
+// Edit the getColor property to match data properties in your GeoJSON layers
 // In this example, columns follow this pattern: index1910, index1920...
 function style(feature) {
   return {
-    fillColor: getColor(feature.properties["index" + year]),
+    fillColor: getColor(feature.properties["index" + year]), // *TO DO* add 'temp' column from the layer
     weight: 1,
     opacity: 1,
     color: 'black',
@@ -93,15 +93,15 @@ info.onAdd = function (map) {
     return this._div;
 };
 
-// Edit info box labels (such as props.town) to match properties of the GeoJSON data
+// Edit info box labels (such as props.name) to match properties of the GeoJSON data
 info.update = function (props) {
   var winName =
   this._div.innerHTML = (props ?
-    '<div class="areaName">' + props.town + '</div>' : '<div class="areaName faded">Hover over areas</div>') + '<div class="areaLabel"><div class="areaValue">Home Value Index</div>' +(props ? '' + (checkNull(props["index" + year])) : '--') + '</div>';
+    '<div class="areaName">' + props.name + '</div>' : '<div class="areaName faded">Hover over areas</div>') + '<div class="areaLabel"><div class="areaValue">Percent White</div>' +(props ? '' + (checkNull(props["index" + year])) : '--') + '</div>';
 };
 info.addTo(map);
 
-// When a new tab is selected, this changes the year displayed
+// When a new tab is selected, this removes/adds the GeoJSON data layers
 $(".tabItem").click(function() {
   $(".tabItem").removeClass("selected");
   $(this).addClass("selected");
