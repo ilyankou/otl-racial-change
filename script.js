@@ -49,8 +49,9 @@ function getColor(d) {
 // Edit the getColor property to match data properties in your GeoJSON file
 // In this example, columns follow this pattern: index1910, index1920...
 function style(feature) {
+  console.log(feature.properties.temp);
   return {
-    fillColor: getColor(feature.properties["index" + year]),
+    fillColor: getColor(parseFloat(feature.properties.temp)),
     weight: 1,
     opacity: 1,
     color: 'black',
@@ -97,7 +98,7 @@ info.onAdd = function (map) {
 info.update = function (props) {
   var winName =
   this._div.innerHTML = (props ?
-    '<div class="areaName">' + props.town + '</div>' : '<div class="areaName faded">Hover over areas</div>') + '<div class="areaLabel"><div class="areaValue">Home Value Index</div>' +(props ? '' + (checkNull(props["index" + year])) : '--') + '</div>';
+    '<div class="areaName">' + props.name + '</div>' : '<div class="areaName faded">Hover over areas</div>') + '<div class="areaLabel"><div class="areaValue">Home Value Index</div>' +(props ? '' + (checkNull(props.temp)) : '--') + '</div>';
 };
 info.addTo(map);
 
